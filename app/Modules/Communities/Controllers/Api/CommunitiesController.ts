@@ -1,6 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Community from "App/Modules/Communities/Community";
-import GetCommunitiesValidator from '../../Validators/GetCommunitiesValidator';
+import GetCommunitiesValidator from 'App/Modules/Communities/Validators/GetCommunitiesValidator';
 
 export default class CommunitiesController {
 
