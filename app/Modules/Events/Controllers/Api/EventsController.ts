@@ -40,13 +40,11 @@ export default class EventsController {
 
         await ctx.request.file('image')?.moveToDisk('./events')
 
-        const image = await Drive.getUrl(`events/${body.image.fileName}`)
-
         const event = await Event.create({
             name: body.name,
             description: body.description,
             community_id: body.community_id,
-            image,
+            image: await Drive.getUrl(`events/${body.image.fileName}`),
             type: body.type,
             ...(body.type === 'offline' ?
                 {
@@ -59,6 +57,31 @@ export default class EventsController {
             ),
             date: body.date
         })
+
+        return event
+    }
+
+    public async update(ctx: HttpContextContract) {
+        const body = await ctx.request.validate(StoreValidator)
+        const event = await Event.findOrFail(ctx.params.id)
+
+        await ctx.bouncer.with('EventsPolicy').authorize('update', event)
+
+        await ctx.request.file('image')?.moveToDisk('./events')
+
+        event.name = body.name
+        event.description = body.description
+        event.image = await Drive.getUrl(`events/${body.image.fileName}`)
+        event.date = body.date
+        
+        if (body.type === 'offline') {
+            event.location = body.location as string
+        } else {
+            event.link = body.link as string
+            event.platform = body.platform as string
+        }
+
+        await event.save()
 
         return event
     }

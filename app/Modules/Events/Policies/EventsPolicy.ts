@@ -1,6 +1,7 @@
 import { BasePolicy } from '@ioc:Adonis/Addons/Bouncer'
 import User from 'App/Modules/Users/User'
 import Community from 'App/Modules/Communities/Community'
+import Event from 'App/Modules/Events/Event'
 
 export default class EventsPolicy extends BasePolicy {
 	public async create(user: User, communty: Community) {
@@ -9,5 +10,9 @@ export default class EventsPolicy extends BasePolicy {
 		}
 
 		return user.community_id === communty.id
+	}
+
+	public async update(user: User, event: Event) {
+		return user.community_id === event.community_id
 	}
 }
