@@ -25,4 +25,10 @@ export default class AuthController {
 
         return await ctx.auth.use('api').generate(user)
     }
+
+    public me(ctx: HttpContextContract) {
+        return {
+            data: ctx.auth.user
+        }
+    }
 }
