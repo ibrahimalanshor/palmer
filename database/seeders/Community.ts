@@ -13,7 +13,8 @@ export default class extends BaseSeeder {
       return {
         name: faker.company.name(),
         description: faker.lorem.sentence(),
-        image: (randomImage as Photo).src.medium
+        image: (randomImage as Photo).src.medium,
+        location: faker.location.city()
       }
     }))
 
