@@ -12,4 +12,10 @@ export default class CommunitiesController {
             .paginate(query.page ?? 1, query.perPage ?? 10)
     }
 
+    public async show(ctx: HttpContextContract) {
+        return {
+            data: await Community.findOrFail(ctx.params.id)
+        }
+    }
+
 }
