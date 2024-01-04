@@ -28,7 +28,9 @@ export default class AuthController {
         return await ctx.auth.use('api').generate(user)
     }
 
-    public me(ctx: HttpContextContract) {
+    public async me(ctx: HttpContextContract) {
+        await ctx.auth.user?.load('community')
+
         return {
             data: ctx.auth.user
         }

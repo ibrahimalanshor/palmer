@@ -9,7 +9,7 @@ export default class GetEventsValidator {
         perPage: schema.number.optional(),
         search: schema.string.nullableAndOptional(),
         community_id: schema.number.optional(),
-        includeCommunity: schema.boolean.optional()
+        include_community: schema.boolean.optional()
     })
 
     public messages: CustomMessages = {}

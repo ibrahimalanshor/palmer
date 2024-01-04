@@ -5,7 +5,7 @@ export default class FindEventsValidator {
     constructor (protected ctx: HttpContextContract) {}
 
     public schema = schema.create({
-        includeCommunity: schema.boolean.optional()
+        include_community: schema.boolean.optional()
     })
 
     public messages: CustomMessages = {}
