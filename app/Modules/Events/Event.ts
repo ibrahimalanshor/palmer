@@ -1,5 +1,6 @@
-import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
 import { DateTime } from "luxon";
+import Community from "App/Modules/Communities/Community";
 
 export default class Event extends BaseModel {
     @column({ isPrimary: true })
@@ -16,6 +17,11 @@ export default class Event extends BaseModel {
 
     @column()
     public community_id: number
+
+    @belongsTo(() => Community, {
+        foreignKey: 'community_id'
+    })
+    public community: BelongsTo<typeof Community>
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime
