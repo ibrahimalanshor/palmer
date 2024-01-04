@@ -12,4 +12,10 @@ export default class EventsController {
             .paginate(query.page ?? 1, query.perPage ?? 10)
     }
 
+    public async show(ctx: HttpContextContract) {
+        return {
+            data: await Event.findOrFail(ctx.params.id)
+        }
+    }
+
 }
