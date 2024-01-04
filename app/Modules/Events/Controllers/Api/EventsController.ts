@@ -86,4 +86,14 @@ export default class EventsController {
         return event
     }
 
+    public async destroy(ctx: HttpContextContract) {
+        const event = await Event.findOrFail(ctx.params.id)
+
+        await ctx.bouncer.with('EventsPolicy').authorize('destroy', event)
+
+        await event.delete()
+
+        return event
+    }
+
 }

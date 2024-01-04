@@ -15,4 +15,8 @@ export default class EventsPolicy extends BasePolicy {
 	public async update(user: User, event: Event) {
 		return user.community_id === event.community_id
 	}
+
+	public async destroy(user: User, event: Event) {
+		return user.community_id === event.community_id
+	}
 }
