@@ -12,12 +12,16 @@ export default class extends BaseSeeder {
 
     const data = await Promise.all(Array.from({ length: 10 }, async () : Promise<Partial<ModelAttributes<Event>>> => {
       const randomImage = await createClient(Config.get('pexels.apiKey')).photos.random()
+      const type: 'online' | 'offline' = faker.helpers.arrayElement(['online', 'offline'])
 
       return {
         name: faker.lorem.sentence(),
         description: faker.lorem.sentence(),
         image: (randomImage as Photo).src.medium,
-        community_id: faker.helpers.arrayElement(communities).id
+        community_id: faker.helpers.arrayElement(communities).id,
+        type,
+        ...(type === 'offline' ? { location: `${faker.location.state()}, ${faker.location.city()}` } : {}),
+        ...(type === 'online' ? { link: faker.internet.url() } : {})
       }
     }))
 

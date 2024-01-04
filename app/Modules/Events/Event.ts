@@ -16,6 +16,15 @@ export default class Event extends BaseModel {
     public description: string
 
     @column()
+    public type: string
+
+    @column()
+    public location: string
+
+    @column()
+    public link: string
+
+    @column()
     public community_id: number
 
     @belongsTo(() => Community, {
