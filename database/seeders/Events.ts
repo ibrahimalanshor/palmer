@@ -5,6 +5,7 @@ import { Photo, createClient } from 'pexels';
 import { ModelAttributes } from '@ioc:Adonis/Lucid/Orm';
 import Config from '@ioc:Adonis/Core/Config'
 import Community from 'App/Modules/Communities/Community';
+import { DateTime } from 'luxon';
 
 export default class extends BaseSeeder {
   public async run () {
@@ -21,7 +22,9 @@ export default class extends BaseSeeder {
         community_id: faker.helpers.arrayElement(communities).id,
         type,
         ...(type === 'offline' ? { location: `${faker.location.state()}, ${faker.location.city()}` } : {}),
-        ...(type === 'online' ? { link: faker.internet.url() } : {})
+        ...(type === 'online' ? { link: faker.internet.url() } : {}),
+        ...(type === 'online' ? { platform: 'zoom' } : {}),
+        date: DateTime.fromJSDate(faker.date.soon())
       }
     }))
 
