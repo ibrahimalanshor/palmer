@@ -14,6 +14,9 @@ export default class Event extends BaseModel {
     @column()
     public description: string
 
+    @column()
+    public community_id: number
+
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime
 
