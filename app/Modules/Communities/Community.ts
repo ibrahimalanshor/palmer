@@ -17,6 +17,9 @@ export default class Community extends BaseModel {
     @column()
     public location: string
 
+    @column({ serializeAs: null })
+    public is_active: boolean
+
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime
 
