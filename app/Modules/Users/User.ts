@@ -15,6 +15,9 @@ export default class User extends BaseModel {
   @column()
   public community_id: number
 
+  @column({ serialize: Boolean })
+  public is_registration_complete: boolean
+
   @column()
   public rememberMeToken: string | null
 

@@ -9,12 +9,13 @@ export default class CommunitiesController {
 
         return await Community.query()
             .whereILike('name', `%${query.search ?? ''}%`)
+            .where('is_active', true)
             .paginate(query.page ?? 1, query.perPage ?? 10)
     }
 
     public async show(ctx: HttpContextContract) {
         return {
-            data: await Community.findOrFail(ctx.params.id)
+            data: await Community.query().where('is_active', true).where('id', ctx.params.id).firstOrFail()
         }
     }
 
