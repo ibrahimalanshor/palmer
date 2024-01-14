@@ -1,7 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-    Route.resource('events', 'EventsController').apiOnly().as('events').middleware({
+    Route.resource('events', 'EventsController').only(['index']).as('events').middleware({
         store: ['auth'],
         update: ['auth'],
         destroy: ['auth']

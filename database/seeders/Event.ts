@@ -1,6 +1,6 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Event from 'App/Modules/Events/Event'
-import { faker } from '@faker-js/faker';
+import { fa, faker } from '@faker-js/faker';
 import { Photo, createClient } from 'pexels';
 import { ModelAttributes } from '@ioc:Adonis/Lucid/Orm';
 import Config from '@ioc:Adonis/Core/Config'
@@ -11,22 +11,61 @@ export default class extends BaseSeeder {
   public async run () {
     const communities = await Community.all()
 
-    const data = await Promise.all(Array.from({ length: 10 }, async () : Promise<Partial<ModelAttributes<Event>>> => {
-      const randomImage = await createClient(Config.get('pexels.apiKey')).photos.random()
-      const type: 'online' | 'offline' = faker.helpers.arrayElement(['online', 'offline'])
-
-      return {
-        name: faker.lorem.sentence(),
+    const events: Partial<ModelAttributes<Event>>[] = [
+      {
+        name: 'Belajar Memanfaatkan Air Hukan',
         description: faker.lorem.sentence(),
-        image: (randomImage as Photo).src.medium,
-        community_id: faker.helpers.arrayElement(communities).id,
-        type,
-        ...(type === 'offline' ? { location: `${faker.location.state()}, ${faker.location.city()}` } : {}),
-        ...(type === 'online' ? { link: faker.internet.url() } : {}),
-        ...(type === 'online' ? { platform: 'zoom' } : {}),
+        type: 'offline',
+        location: 'Jombor, Sleman',
+        date: DateTime.fromJSDate(faker.date.soon())
+      },
+      {
+        name: 'Belajar Memaknai Air Hujan Dengan Gembira',
+        description: faker.lorem.sentence(),
+        type: 'offline',
+        location: 'Sapuran, Purworejo',
+        date: DateTime.fromJSDate(faker.date.soon())
+      },
+      {
+        name: 'Belajar Kandungan Dalam Air Hujan',
+        description: faker.lorem.sentence(),
+        type: 'online',
+        link: faker.internet.url(),
+        platform: 'zoom',
+        date: DateTime.fromJSDate(faker.date.soon())
+      },
+      {
+        name: 'Belajar Kandungan Dalam Air Hujan',
+        description: faker.lorem.sentence(),
+        type: 'online',
+        link: faker.internet.url(),
+        platform: 'zoom',
+        date: DateTime.fromJSDate(faker.date.soon())
+      },
+      {
+        name: 'Misteri Tentang Hujan',
+        description: faker.lorem.sentence(),
+        type: 'online',
+        link: faker.internet.url(),
+        platform: 'zoom',
+        date: DateTime.fromJSDate(faker.date.soon())
+      },
+      {
+        name: 'Fakta dan Mitos Tentang Hujan',
+        description: faker.lorem.sentence(),
+        type: 'online',
+        link: faker.internet.url(),
+        platform: 'zoom',
         date: DateTime.fromJSDate(faker.date.soon())
       }
+    ]
+
+    const promises = events.map(async (event): Promise<Partial<ModelAttributes<Event>>> => ({
+      ...event,
+      community_id: faker.helpers.arrayElement(communities).id,
+      image: (await createClient(Config.get('pexels.apiKey')).photos.random() as Photo).src.medium
     }))
+    const data = await Promise.all(promises)
 
     await Event.createMany(data)
   }

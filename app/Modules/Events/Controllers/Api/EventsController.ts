@@ -13,9 +13,7 @@ export default class EventsController {
 
         return await Event.query()
             .whereILike('name', `%${query.search ?? ''}%`)
-            .if(query.include_community, (queryBuilder) => {
-                queryBuilder.preload('community')
-            })
+            .preload('community')
             .if(query.community_id, (queryBuilder) => {
                 queryBuilder.where('community_id', query.community_id as number)
             })
